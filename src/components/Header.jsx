@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import NewBudget from "./New-Budget.jsx";
+import ControlBudget from "./ControlBudget.jsx";
 
 Header.propTypes = {
   budget: PropTypes.number,
@@ -17,11 +18,19 @@ function Header({
   return (
       <header>
         <h1>Expense Planner</h1>
-        <NewBudget
-            budget={budget}
-            setBudget={setBudget}
-            setIsValidBudget={setIsValidBudget}
-        />
+        {isValidBudget ? (
+            <ControlBudget
+                budget={budget}
+            />
+        ) : (
+            <NewBudget
+                budget={budget}
+                setBudget={setBudget}
+                setIsValidBudget={setIsValidBudget}
+            />
+        )
+        }
+
       </header>
   );
 }

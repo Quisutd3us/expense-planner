@@ -1,0 +1,35 @@
+import PropTypes from 'prop-types';
+
+ControlBudget.propTypes = {
+  budget: PropTypes.number
+};
+
+function ControlBudget({budget}) {
+  const formatBudget = (amount) => {
+    return amount.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD'
+    })
+  }
+  return (
+      <div className={'contenedor sombra dos-columnas contenedor-presupuesto'}>
+        <div>
+          <p>Graphic here</p>
+        </div>
+        <div className={'contenido-presupuesto'}>
+          <p>
+            <span>Budget:</span> {formatBudget(budget)}
+          </p>
+          <p>
+            <span>Available:</span> {formatBudget(0)}
+          </p>
+          <p>
+            <span>Spent:</span> {formatBudget(0)}
+          </p>
+        </div>
+
+      </div>
+  );
+}
+
+export default ControlBudget;
