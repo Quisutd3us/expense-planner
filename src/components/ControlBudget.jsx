@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
 
 ControlBudget.propTypes = {
-  budget: PropTypes.number
+  budget: PropTypes.number,
+  totalBills: PropTypes.number
 };
 
-function ControlBudget({budget}) {
+function ControlBudget({budget, totalBills}) {
   const formatBudget = (amount) => {
     return amount.toLocaleString('en-US', {
       style: 'currency',
@@ -21,13 +22,12 @@ function ControlBudget({budget}) {
             <span>Budget:</span> {formatBudget(budget)}
           </p>
           <p>
-            <span>Available:</span> {formatBudget(0)}
+            <span>Available:</span> {formatBudget(budget-totalBills)}
           </p>
           <p>
-            <span>Spent:</span> {formatBudget(0)}
+            <span>Spent:</span> {formatBudget(totalBills)}
           </p>
         </div>
-
       </div>
   );
 }

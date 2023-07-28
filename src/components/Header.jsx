@@ -6,14 +6,16 @@ Header.propTypes = {
   budget: PropTypes.number,
   setBudget: PropTypes.func,
   isValidBudget: PropTypes.bool,
-  setIsValidBudget: PropTypes.func
+  setIsValidBudget: PropTypes.func,
+  totalBills: PropTypes.number
 };
 
 function Header({
                   budget,
                   setBudget,
                   isValidBudget,
-                  setIsValidBudget
+                  setIsValidBudget,
+                  totalBills
                 }) {
   return (
       <header>
@@ -21,6 +23,7 @@ function Header({
         {isValidBudget ? (
             <ControlBudget
                 budget={budget}
+                totalBills={totalBills}
             />
         ) : (
             <NewBudget
