@@ -17,9 +17,8 @@ function ControlBudget({budget, bills}) {
 
   // observer for change totalBills for update available
   useEffect(() => {
-    if (totalBills > 0) {
-      setAvailable(budget - totalBills)
-    }
+    const updateAvailable = budget - totalBills
+      setAvailable(updateAvailable)
   }, [totalBills])
 
   // observer for change bills for sum all values
