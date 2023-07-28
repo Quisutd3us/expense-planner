@@ -16,10 +16,10 @@ import imgHouse from '../img/icono_casa.svg'
 import imgHealth from '../img/icono_salud.svg'
 import imgSuscription from '../img/icono_suscripciones.svg'
 import imgFunny from '../img/icono_ocio.svg'
-import InsertBills from "./InsertBills.jsx";
 
 Bill.propTypes = {
-  bill: PropTypes.object
+  bill: PropTypes.object,
+  setEditBill: PropTypes.func
 };
 
 // setting dictionary of icons
@@ -33,21 +33,21 @@ const dictionaryIcons = {
   'funny': imgFunny
 }
 
-function Bill({bill}) {
+function Bill({bill, setEditBill}) {
   // destructuring bill
   const {category, name, amount, id, date} = bill
 
-  // functions relative to react-swipeable-list component
+  // functions relative to react-swipe-able-list component
   const LeadingActionsNode = () => (
       <LeadingActions>
         <SwipeAction onClick={() => {
-          console.log('edit',id)
+          setEditBill(bill)
         }}>Edit</SwipeAction>
       </LeadingActions>
   );
   const TrailingActionsNode = () => (
       <TrailingActions>
-        <SwipeAction onClick={() => console.log("Delete",id)}>Delete</SwipeAction>
+        <SwipeAction onClick={() => console.log("Delete", id)}>Delete</SwipeAction>
       </TrailingActions>
   );
   return (
@@ -76,8 +76,8 @@ function Bill({bill}) {
           </div>
         </SwipeableListItem>
       </SwipeableList>
-)
-  ;
+  )
+      ;
 }
 
 export default Bill;

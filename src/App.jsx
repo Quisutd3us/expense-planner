@@ -1,14 +1,17 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 // import components
 import Header from "./components/Header.jsx";
-
+// import helpers
+import {formatDates, genId} from "./helpers/index.js"
 // import images
 import iconNewSpent from './img/nuevo-gasto.svg'
 import InsertBills from "./components/InsertBills.jsx";
 import ListBills from "./components/ListBills.jsx";
+import {object} from "prop-types";
 
 function App() {
-
+  // set state for Edit Bills
+  const [editBill, setEditBill] = useState({})
   // set state for bills component
   const [bills, setBills] = useState([])
   // define Budget State
@@ -21,6 +24,12 @@ function App() {
   const [animateModal, setAnimateModal] = useState(false)
 
 
+  // looking for changes in editBill object
+  useEffect(() => {
+    if (Object.keys(editBill).length > 0) {
+      handleNewSpent()
+    }
+  }, [editBill])
 
   // handle click to add new Spent
   const handleNewSpent = () => {
@@ -32,8 +41,11 @@ function App() {
   }
 
   const saveBills = (bill) => {
-    // update bills array
+    // set new bill
+    bill.id=genId()
+    bill.date= formatDates(Date.now())
     setBills([bill, ...bills])
+
     // closing modal
     setAnimateModal(false)
     setTimeout(() => {
@@ -58,6 +70,7 @@ function App() {
                     <ListBills
                         bills={bills}
                         modal={modal}
+                        setEditBill={setEditBill}
                     />
                   </main>
                   <div className={'nuevo-gasto'}>
@@ -76,6 +89,7 @@ function App() {
                 animateModal={animateModal}
                 setAnimateModal={setAnimateModal}
                 saveBills={saveBills}
+                editBill={editBill}
             />
         }
       </div>

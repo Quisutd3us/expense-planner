@@ -3,8 +3,6 @@ import {useState} from "react";
 import PropTypes from 'prop-types';
 // import components
 import Messages from "./Messages.jsx";
-// import helpers
-import {genId, formatDates} from "../helpers/index.js"
 // import images
 import closeImgModal from '../img/cerrar.svg'
 
@@ -13,17 +11,24 @@ InsertBills.propTypes = {
   setModal: PropTypes.func,
   animateModal: PropTypes.bool,
   setAnimateModal: PropTypes.func,
-  saveBills: PropTypes.func
+  saveBills: PropTypes.func,
+  editBill: PropTypes.object
 };
 
-function InsertBills({setModal, animateModal, setAnimateModal, saveBills}) {
+function InsertBills({
+                       setModal,
+                       animateModal,
+                       setAnimateModal,
+                       saveBills,
+                       editBill
+                     }) {
 
-  // add state for nameBill input
-  const [nameBill, setNameBill] = useState('')
+  // add state for name input
+  const [name, setName] = useState(editBill.name ? editBill.name : '')
   // add state for amount input
-  const [amountBill, setAmountBill] = useState(0)
+  const [amount, setAmount] = useState(editBill.amount ? editBill.amount : 0)
   // add state for Type of Bill select Input
-  const [categoryBill, setCategoryBill] = useState('')
+  const [category, setCategory] = useState(editBill.category ? editBill.category : '')
   // add state for manage validation errors
   const [messageBill, setMessageBill] = useState('')
 
@@ -39,7 +44,7 @@ function InsertBills({setModal, animateModal, setAnimateModal, saveBills}) {
   const handleSubmitBill = e => {
     e.preventDefault()
 
-    if ([nameBill, amountBill, categoryBill].includes('')) {
+    if ([name, amount, category].includes('')) {
       setMessageBill('All camps are required')
       setTimeout(() => {
         setMessageBill('')
@@ -47,7 +52,7 @@ function InsertBills({setModal, animateModal, setAnimateModal, saveBills}) {
       return
     }
 
-    if (amountBill < 1 || amountBill > 1000000) {
+    if (amount < 1 || amount > 1000000) {
       setMessageBill('The amount Of bill must be into 1 US and 1.000.000 USD')
       setTimeout(() => {
         setMessageBill('')
@@ -59,17 +64,8 @@ function InsertBills({setModal, animateModal, setAnimateModal, saveBills}) {
     setMessageBill('')
 
 
-    // create object bill
-    const bill = {
-      id: genId(),
-      name: nameBill,
-      amount: amountBill,
-      category: categoryBill,
-      date: formatDates(Date.now()),
-      isEnable: true
-    }
     // send input states to App component
-    saveBills(bill)
+    saveBills({name,amount,category})
 
   }
   return (
@@ -89,15 +85,15 @@ function InsertBills({setModal, animateModal, setAnimateModal, saveBills}) {
           {/*Show component message if don't pass the validations*/}
           {messageBill && <Messages typeMsg={'error'}>{messageBill}</Messages>}
           <div className={'campo'}>
-            <label htmlFor={'nameBill'}>Name Bill</label>
+            <label htmlFor={'name'}>Name Bill</label>
             <input
                 type={'text'}
                 placeholder={'Add Name of BILL'}
-                id={'nameBill'}
+                id={'name'}
                 maxLength={40}
-                value={nameBill}
+                value={name}
                 required={true}
-                onChange={e => setNameBill(e.target.value)}
+                onChange={e => setName(e.target.value)}
             />
           </div>
           {/*amount of bill*/}
@@ -107,9 +103,9 @@ function InsertBills({setModal, animateModal, setAnimateModal, saveBills}) {
                 type={'number'}
                 placeholder={'Add Amount of BILL'}
                 id={'amount'}
-                value={amountBill.toString().slice()}
+                value={amount.toString().slice()}
                 maxLength={6}
-                onChange={e => setAmountBill(Number(e.target.value))}
+                onChange={e => setAmount(Number(e.target.value))}
             />
           </div>
           {/*category of BIll*/}
@@ -117,7 +113,7 @@ function InsertBills({setModal, animateModal, setAnimateModal, saveBills}) {
             <label htmlFor={'category'}>Category</label>
             <select
                 id={'category'}
-                onChange={e => setCategoryBill(e.target.value)}
+                onChange={e => setCategory(e.target.value)}
                 required={true}
             >
               <option value={''}>{'--Select Type Of Bill --'}</option>
