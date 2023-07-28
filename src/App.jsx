@@ -57,6 +57,7 @@ function App() {
                   <main>
                     <ListBills
                         bills={bills}
+                        modal={modal}
                     />
                   </main>
                   <div className={'nuevo-gasto'}>
