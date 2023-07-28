@@ -8,12 +8,11 @@ import InsertBills from "./components/InsertBills.jsx";
 import ListBills from "./components/ListBills.jsx";
 
 function App() {
-  // define Budget State
-  const [budget, setBudget] = useState(0)
+
   // set state for bills component
   const [bills, setBills] = useState([])
-  // set state for Total bills component
-  const [totalBills, setTotalBills] = useState(0)
+  // define Budget State
+  const [budget, setBudget] = useState(0)
   // define state and manage if the budget is valid
   const [isValidBudget, setIsValidBudget] = useState(false)
   // create and define state for show modal
@@ -21,18 +20,8 @@ function App() {
   // create state to manage animateModal
   const [animateModal, setAnimateModal] = useState(false)
 
-  // observer for change bills for sum all values
-  useEffect(() => {
-    if (bills.length) {
-      let sum =0;
-      bills.map(bill => {
-        sum += bill.amount
-      })
-      setTotalBills(sum)
-    }
 
 
-  }, [bills])
   // handle click to add new Spent
   const handleNewSpent = () => {
     setModal(true)
@@ -53,13 +42,13 @@ function App() {
   }
 
   return (
-      <div className={modal&& 'pinup'}>
+      <div className={modal ? 'pinup' : ''}>
         <Header
             budget={budget}
             setBudget={setBudget}
             isValidBudget={isValidBudget}
             setIsValidBudget={setIsValidBudget}
-            totalBills={totalBills}
+            bills={bills}
         />
         {/*bottom new Spent*/}
         {
