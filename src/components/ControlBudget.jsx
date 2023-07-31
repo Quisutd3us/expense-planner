@@ -48,7 +48,7 @@ function ControlBudget({budget, bills}) {
         <div>
           <CircularProgressbar
               styles={buildStyles({
-                pathColor: '#3B82f6',
+                pathColor: percent > 100 ? '#DC2626' : '#3B82f6',
                 trailColor: '#F1F1F1',
                 textColor: '#3B82f6'
               })}
@@ -60,7 +60,7 @@ function ControlBudget({budget, bills}) {
           <p>
             <span>Budget:</span> {formatBudget(budget)}
           </p>
-          <p>
+          <p className={`${available < 0 ? 'negativo' : ''}`}>
             <span>Available:</span> {formatBudget(available)}
           </p>
           <p>
