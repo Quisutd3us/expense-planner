@@ -7,7 +7,8 @@ Header.propTypes = {
   setBudget: PropTypes.func,
   isValidBudget: PropTypes.bool,
   setIsValidBudget: PropTypes.func,
-  bills: PropTypes.array
+  bills: PropTypes.array,
+  setBills:PropTypes.func
 };
 
 function Header({
@@ -15,7 +16,8 @@ function Header({
                   setBudget,
                   isValidBudget,
                   setIsValidBudget,
-                  bills
+                  bills,
+                  setBills
                 }) {
   return (
       <header>
@@ -24,6 +26,9 @@ function Header({
             <ControlBudget
                 budget={budget}
                 bills={bills}
+                setBills={setBills}
+                setBudget={setBudget}
+                setIsValidBudget={setIsValidBudget}
             />
         ) : (
             <NewBudget

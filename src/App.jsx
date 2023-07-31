@@ -113,6 +113,7 @@ function App() {
             isValidBudget={isValidBudget}
             setIsValidBudget={setIsValidBudget}
             bills={bills}
+            setBills={setBills}
         />
         {/*bottom new Spent*/}
         {

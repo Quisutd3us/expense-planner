@@ -5,10 +5,19 @@ import "react-circular-progressbar/dist/styles.css";
 
 ControlBudget.propTypes = {
   budget: PropTypes.number,
-  bills: PropTypes.array
+  bills: PropTypes.array,
+  setBills: PropTypes.func,
+  setBudget:PropTypes.func,
+  setIsValidBudget:PropTypes.func
 };
 
-function ControlBudget({budget, bills}) {
+function ControlBudget({
+                         budget,
+                         bills,
+                         setBills,
+                         setBudget,
+                         setIsValidBudget
+                       }) {
 
   // set state for percent Spent
   const [percent, setPercent] = useState(0)
@@ -43,8 +52,20 @@ function ControlBudget({budget, bills}) {
       currency: 'USD'
     })
   }
+
+  // handle reset button App
+
+  const handleResetApp = ()=>{
+    const rst = confirm('Are you Sure to reset The App')
+    if(rst){
+      setBudget(0)
+      setBills([])
+      setIsValidBudget(false)
+    }
+  }
   return (
       <div className={'contenedor sombra dos-columnas contenedor-presupuesto'}>
+        {/*Graphic*/}
         <div>
           <CircularProgressbar
               styles={buildStyles({
@@ -56,7 +77,15 @@ function ControlBudget({budget, bills}) {
               text={`${percent}% Spent`}
           />
         </div>
+        {/*info Budget*/}
         <div className={'contenido-presupuesto'}>
+          <button
+          className={'reset-app'}
+          type={'button'}
+          onClick={handleResetApp}
+          >
+            Reset App
+          </button>
           <p>
             <span>Budget:</span> {formatBudget(budget)}
           </p>
