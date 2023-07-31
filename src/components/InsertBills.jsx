@@ -13,7 +13,7 @@ InsertBills.propTypes = {
   setAnimateModal: PropTypes.func,
   saveBills: PropTypes.func,
   editBill: PropTypes.object,
-  setEditBill:PropTypes.func
+  setEditBill: PropTypes.func
 };
 
 function InsertBills({
@@ -27,6 +27,8 @@ function InsertBills({
 
   // add state for id
   const [id, setID] = useState('')
+  // add state for date
+  const [date, setDate] = useState('')
   // add state for name input
   const [name, setName] = useState('')
   // add state for amount input
@@ -38,10 +40,11 @@ function InsertBills({
 
   useEffect(() => {
     if (Object.keys(editBill).length > 0) {
+      setDate(editBill.date)
+      setID(editBill.id)
       setName(editBill.name)
       setAmount(editBill.amount)
       setCategory(editBill.category)
-      setID(editBill.id)
     }
   }, [])
 
@@ -80,7 +83,7 @@ function InsertBills({
 
 
     // send input states to App component
-    saveBills({name, amount, category, id})
+    saveBills({name, amount, category, id, date})
 
   }
   return (

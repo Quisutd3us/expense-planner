@@ -7,9 +7,10 @@ import {formatDates, genId} from "./helpers/index.js"
 import iconNewSpent from './img/nuevo-gasto.svg'
 import InsertBills from "./components/InsertBills.jsx";
 import ListBills from "./components/ListBills.jsx";
-import {object} from "prop-types";
-
 function App() {
+
+  // set state for delete Bill
+  const [delBill, setDelBill] = useState({})
   // set state for Edit Bills
   const [editBill, setEditBill] = useState({})
   // set state for bills component
@@ -22,6 +23,14 @@ function App() {
   const [modal, setModal] = useState(false)
   // create state to manage animateModal
   const [animateModal, setAnimateModal] = useState(false)
+
+  // looking for changes in delBill state
+  useEffect(()=>{
+    if(Object.keys(delBill).length>0){
+      const updateBills = bills.filter(billState=> billState.id !== delBill.id)
+      setBills(updateBills)
+    }
+  },[delBill])
 
 
   // looking for changes in editBill object
@@ -49,7 +58,6 @@ function App() {
 
   const saveBills = (bill) => {
     if (bill.id) {
-      bill.date = formatDates(Date.now())
       const updateBills = bills.map(billState => billState.id === bill.id ? bill : billState)
       setBills(updateBills)
     } else {
@@ -85,6 +93,7 @@ function App() {
                         bills={bills}
                         modal={modal}
                         setEditBill={setEditBill}
+                        setDelBill={setDelBill}
                     />
                   </main>
                   <div className={'nuevo-gasto'}>
