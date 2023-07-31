@@ -3,11 +3,8 @@ import {useState, useEffect} from "react";
 import PropTypes from 'prop-types';
 // import components
 import Messages from "./Messages.jsx";
-// import helpers
-import {formatDates} from "../helpers/index.js";
 // import images
 import closeImgModal from '../img/cerrar.svg'
-
 
 // declare propTypes
 InsertBills.propTypes = {
@@ -29,7 +26,7 @@ function InsertBills({
                      }) {
 
   // add state for id
-  const [id, setId] = useState('')
+  const [id, setID] = useState('')
   // add state for name input
   const [name, setName] = useState('')
   // add state for amount input
@@ -39,16 +36,15 @@ function InsertBills({
   // add state for manage validation errors
   const [messageBill, setMessageBill] = useState('')
 
-  // checking if the component is mounted
-
   useEffect(() => {
     if (Object.keys(editBill).length > 0) {
       setName(editBill.name)
       setAmount(editBill.amount)
       setCategory(editBill.category)
-      setId(editBill.id)
+      setID(editBill.id)
     }
   }, [])
+
 
   // manage functionality to close modal
   const closeModal = () => {
@@ -81,9 +77,10 @@ function InsertBills({
 
     // change state of message if past al validations
     setMessageBill('')
-    // send input states to App component
 
-    saveBills({id, name, amount, category})
+
+    // send input states to App component
+    saveBills({name, amount, category, id})
 
   }
   return (
@@ -100,7 +97,7 @@ function InsertBills({
             className={`form ${animateModal ? 'animate' : 'cerrar'}`}
             onSubmit={handleSubmitBill}>
           <legend>{Object.keys(editBill).length > 0 ? 'Edit Bill' : 'New Bill'}</legend>
-          {/*Show component message if don't pass the validations*/}
+          {/*Show component message if it doesn't pass the validations*/}
           {messageBill && <Messages typeMsg={'error'}>{messageBill}</Messages>}
           <div className={'campo'}>
             <label htmlFor={'name'}>Name Bill</label>

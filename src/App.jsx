@@ -1,11 +1,13 @@
 import {useState, useEffect} from 'react'
 // import components
 import Header from "./components/Header.jsx";
+// import helpers
+import {formatDates, genId} from "./helpers/index.js"
 // import images
 import iconNewSpent from './img/nuevo-gasto.svg'
 import InsertBills from "./components/InsertBills.jsx";
 import ListBills from "./components/ListBills.jsx";
-import {formatDates, genId} from "./helpers/index.js";
+import {object} from "prop-types";
 
 function App() {
   // set state for Edit Bills
@@ -33,31 +35,27 @@ function App() {
     }
   }, [editBill])
 
-  // handle click to add new Spent
+  // handle click to show modal insertBill.jsx
   const handleNewSpent = () => {
-    setModal(true)
     setEditBill({})
+    setModal(true)
     // manage time for add 'animate' class in component
     setTimeout(() => {
       setAnimateModal(true)
     }, 500)
   }
 
+  // this function creates a new bill in Bills Array
+
   const saveBills = (bill) => {
     if (bill.id) {
-      const date = formatDates(Date.now())
-      bill.date = date
-      // updated bill
-      const updatedBills = bills.map((billState) => billState.id === bill.id ? bill : billState)
-      setBills(updatedBills)
+      bill.date = formatDates(Date.now())
+      const updateBills = bills.map(billState => billState.id === bill.id ? bill : billState)
+      setBills(updateBills)
     } else {
-      //Setting new Bill
-      // format date
-      const date = formatDates(Date.now())
-      // insert new properties to object bill
-      bill.id = genId()
-      bill.date = date
       // set new bill
+      bill.id = genId()
+      bill.date = formatDates(Date.now())
       setBills([bill, ...bills])
     }
 
