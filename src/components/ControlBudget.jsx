@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import {useEffect, useState} from "react";
-import {CircularProgressbar,buildStyles} from "react-circular-progressbar";
+import {CircularProgressbar, buildStyles} from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 
 ControlBudget.propTypes = {
@@ -48,8 +48,9 @@ function ControlBudget({budget, bills}) {
         <div>
           <CircularProgressbar
               styles={buildStyles({
-                pathColor:'#3B82f6',
-                trailColor:'#F1F1F1',
+                pathColor: '#3B82f6',
+                trailColor: '#F1F1F1',
+                textColor: '#3B82f6'
               })}
               value={percent}
               text={`${percent}% Spent`}
