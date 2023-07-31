@@ -7,14 +7,19 @@ import {formatDates, genId} from "./helpers/index.js"
 import iconNewSpent from './img/nuevo-gasto.svg'
 import InsertBills from "./components/InsertBills.jsx";
 import ListBills from "./components/ListBills.jsx";
+
 function App() {
 
   // set state for Edit Bills
   const [editBill, setEditBill] = useState({})
   // set state for bills component
-  const [bills, setBills] = useState([])
+  const [bills, setBills] = useState(
+      localStorage.getItem('bills') ? JSON.parse(localStorage.getItem('bills')) : []
+  )
   // define Budget State
-  const [budget, setBudget] = useState(0)
+  const [budget, setBudget] = useState(
+      Number(localStorage.getItem('budget') ?? 0)
+  )
   // define state and manage if the budget is valid
   const [isValidBudget, setIsValidBudget] = useState(false)
   // create and define state for show modal
@@ -22,8 +27,22 @@ function App() {
   // create state to manage animateModal
   const [animateModal, setAnimateModal] = useState(false)
 
+  // save bills on localStorage
+  useEffect(() => {
+    localStorage.setItem('bills', JSON.stringify(bills) ?? [])
+  }, [bills])
+  // save budget on LocalStorage
+  useEffect(() => {
+    localStorage.setItem('budget', budget ?? 0)
+  }, [budget])
 
-
+  // save budget on LocalStorage
+  useEffect(() => {
+    const budgetLS = Number(localStorage.getItem('budget'))
+    if (budgetLS > 0) {
+      setIsValidBudget(true)
+    }
+  }, [])
 
   // looking for changes in editBill object
   useEffect(() => {
@@ -38,8 +57,8 @@ function App() {
 
   // delete bill function
 
-  const delBill = id =>{
-    const updateBills = bills.filter(billState => billState.id !== id )
+  const delBill = id => {
+    const updateBills = bills.filter(billState => billState.id !== id)
     setBills(updateBills)
   }
 
@@ -93,7 +112,7 @@ function App() {
                         bills={bills}
                         modal={modal}
                         setEditBill={setEditBill}
-                        delBill ={delBill}
+                        delBill={delBill}
                     />
                   </main>
                   <div className={'nuevo-gasto'}>
