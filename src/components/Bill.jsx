@@ -20,7 +20,7 @@ import imgFunny from '../img/icono_ocio.svg'
 Bill.propTypes = {
   bill: PropTypes.object,
   setEditBill: PropTypes.func,
-  setDelBill: PropTypes.func
+  delBill: PropTypes.func
 };
 
 // setting dictionary of icons
@@ -34,17 +34,10 @@ const dictionaryIcons = {
   'funny': imgFunny
 }
 
-function Bill({bill, setEditBill, setDelBill}) {
+function Bill({bill, setEditBill, delBill}) {
   // destructuring bill
-  const {category, name, amount, date} = bill
+  const {category, name, amount, date, id} = bill
 
-  // handle Del bill
-  const handleDel = () => {
-    const rsp = confirm('Are you sure to Delete this Record')
-    if (rsp) {
-      setDelBill(bill)
-    }
-  }
   // functions relative to react-swipe-able-list component
   const LeadingActionsNode = () => (
       <LeadingActions>
@@ -55,9 +48,10 @@ function Bill({bill, setEditBill, setDelBill}) {
   );
   const TrailingActionsNode = () => (
       <TrailingActions>
-        <SwipeAction onClick={() => {
-          handleDel()
-        }}>Delete</SwipeAction>
+        <SwipeAction
+            onClick={() => delBill(id)}
+            destructive={true}
+        >Delete</SwipeAction>
       </TrailingActions>
   );
   return (

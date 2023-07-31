@@ -4,10 +4,10 @@ import Bill from "./Bill.jsx";
 ListBills.propTypes = {
   bills: PropTypes.array,
   setEditBill: PropTypes.func,
-  setDelBill:PropTypes.func
+  delBill:PropTypes.func
 };
 
-function ListBills({bills, setEditBill,setDelBill}) {
+function ListBills({bills, setEditBill,delBill}) {
   return (
       <div className={'listado-gastos contenedor'}>
         <h2>{bills.length ? `Total Bills: (${bills.length})` : `You Don't have Bills ..`}</h2>
@@ -17,7 +17,7 @@ function ListBills({bills, setEditBill,setDelBill}) {
                   key={bill.id}
                   bill={bill}
                   setEditBill={setEditBill}
-                  setDelBill={setDelBill}
+                  delBill={delBill}
               />
           ))
         }
