@@ -1,15 +1,19 @@
 import {useState, useEffect} from 'react'
 // import components
 import Header from "./components/Header.jsx";
+import InsertBills from "./components/InsertBills.jsx";
+import ListBills from "./components/ListBills.jsx";
+import FilterBills from "./components/FilterBills.jsx";
 // import helpers
 import {formatDates, genId} from "./helpers/index.js"
 // import images
 import iconNewSpent from './img/nuevo-gasto.svg'
-import InsertBills from "./components/InsertBills.jsx";
-import ListBills from "./components/ListBills.jsx";
 
 function App() {
-
+  // set state for filterBills
+  const [filterBills, setFilterBills] = useState([])
+  // set state for filter functionality
+  const [filter, setFilter] = useState('')
   // set state for Edit Bills
   const [editBill, setEditBill] = useState({})
   // set state for bills component
@@ -44,7 +48,14 @@ function App() {
     }
   }, [])
 
-  // looking for changes in editBill object
+  // looking for changes on filter state
+
+  useEffect(() => {
+    const filterBills = bills.filter(billState => billState.category === filter)
+    setFilterBills(filterBills)
+  }, [filter])
+
+  // looking for changes in editBill state
   useEffect(() => {
     if (Object.keys(editBill).length > 0) {
       setModal(true)
@@ -108,11 +119,17 @@ function App() {
             isValidBudget && (
                 <>
                   <main>
+                    <FilterBills
+                        setFilter={setFilter}
+                        filter={filter}
+                    />
                     <ListBills
                         bills={bills}
                         modal={modal}
                         setEditBill={setEditBill}
                         delBill={delBill}
+                        filter={filter}
+                        filterBills={filterBills}
                     />
                   </main>
                   <div className={'nuevo-gasto'}>
