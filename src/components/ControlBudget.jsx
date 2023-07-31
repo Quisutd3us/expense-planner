@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types';
 import {useEffect, useState} from "react";
+import {CircularProgressbar,buildStyles} from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 ControlBudget.propTypes = {
   budget: PropTypes.number,
@@ -7,6 +9,9 @@ ControlBudget.propTypes = {
 };
 
 function ControlBudget({budget, bills}) {
+
+  // set state for percent Spent
+  const [percent, setPercent] = useState(0)
 
   // set state for availableBudge
   const [available, setAvailable] = useState(budget)
@@ -18,13 +23,17 @@ function ControlBudget({budget, bills}) {
   // observer for change totalBills for update available
   useEffect(() => {
     const updateAvailable = budget - totalBills
-      setAvailable(updateAvailable)
+    const newPercent = Number((((budget - updateAvailable) / budget) * 100).toFixed(2))
+    setTimeout(() => {
+      setPercent(newPercent)
+    }, 1000)
+    setAvailable(updateAvailable)
   }, [totalBills])
 
   // observer for change bills for sum all values
   useEffect(() => {
-      const totalBill = bills.reduce((total, bill) => bill.amount + total, 0)
-      setTotalBills(totalBill)
+    const totalBill = bills.reduce((total, bill) => bill.amount + total, 0)
+    setTotalBills(totalBill)
   }, [bills])
 
   // format amount to usd money format
@@ -37,7 +46,14 @@ function ControlBudget({budget, bills}) {
   return (
       <div className={'contenedor sombra dos-columnas contenedor-presupuesto'}>
         <div>
-          <p>Graphic here</p>
+          <CircularProgressbar
+              styles={buildStyles({
+                pathColor:'#3B82f6',
+                trailColor:'#F1F1F1',
+              })}
+              value={percent}
+              text={`${percent}% Spent`}
+          />
         </div>
         <div className={'contenido-presupuesto'}>
           <p>
