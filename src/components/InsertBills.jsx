@@ -1,10 +1,13 @@
 // import library
-import {useState} from "react";
+import {useState, useEffect} from "react";
 import PropTypes from 'prop-types';
 // import components
 import Messages from "./Messages.jsx";
+// import helpers
+import {formatDates} from "../helpers/index.js";
 // import images
 import closeImgModal from '../img/cerrar.svg'
+
 
 // declare propTypes
 InsertBills.propTypes = {
@@ -12,7 +15,8 @@ InsertBills.propTypes = {
   animateModal: PropTypes.bool,
   setAnimateModal: PropTypes.func,
   saveBills: PropTypes.func,
-  editBill: PropTypes.object
+  editBill: PropTypes.object,
+  setEditBill:PropTypes.func
 };
 
 function InsertBills({
@@ -20,20 +24,35 @@ function InsertBills({
                        animateModal,
                        setAnimateModal,
                        saveBills,
-                       editBill
+                       editBill,
+                       setEditBill
                      }) {
 
+  // add state for id
+  const [id, setId] = useState('')
   // add state for name input
-  const [name, setName] = useState(editBill.name ? editBill.name : '')
+  const [name, setName] = useState('')
   // add state for amount input
-  const [amount, setAmount] = useState(editBill.amount ? editBill.amount : 0)
+  const [amount, setAmount] = useState(0)
   // add state for Type of Bill select Input
-  const [category, setCategory] = useState(editBill.category ? editBill.category : '')
+  const [category, setCategory] = useState('')
   // add state for manage validation errors
   const [messageBill, setMessageBill] = useState('')
 
+  // checking if the component is mounted
+
+  useEffect(() => {
+    if (Object.keys(editBill).length > 0) {
+      setName(editBill.name)
+      setAmount(editBill.amount)
+      setCategory(editBill.category)
+      setId(editBill.id)
+    }
+  }, [])
+
   // manage functionality to close modal
   const closeModal = () => {
+    setEditBill({})
     setAnimateModal(false)
     setTimeout(() => {
       setModal(false)
@@ -62,10 +81,9 @@ function InsertBills({
 
     // change state of message if past al validations
     setMessageBill('')
-
-
     // send input states to App component
-    saveBills({name,amount,category})
+
+    saveBills({id, name, amount, category})
 
   }
   return (
@@ -81,7 +99,7 @@ function InsertBills({
         <form
             className={`form ${animateModal ? 'animate' : 'cerrar'}`}
             onSubmit={handleSubmitBill}>
-          <legend>New Bill</legend>
+          <legend>{Object.keys(editBill).length > 0 ? 'Edit Bill' : 'New Bill'}</legend>
           {/*Show component message if don't pass the validations*/}
           {messageBill && <Messages typeMsg={'error'}>{messageBill}</Messages>}
           <div className={'campo'}>
@@ -113,6 +131,7 @@ function InsertBills({
             <label htmlFor={'category'}>Category</label>
             <select
                 id={'category'}
+                value={category}
                 onChange={e => setCategory(e.target.value)}
                 required={true}
             >
@@ -127,7 +146,7 @@ function InsertBills({
           </div>
           <input
               type={'submit'}
-              value={'Add Bill'}
+              value={Object.keys(editBill).length > 0 ? 'Update Bill' : 'New Bill'}
           />
         </form>
       </div>

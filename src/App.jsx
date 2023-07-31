@@ -1,13 +1,11 @@
 import {useState, useEffect} from 'react'
 // import components
 import Header from "./components/Header.jsx";
-// import helpers
-import {formatDates, genId} from "./helpers/index.js"
 // import images
 import iconNewSpent from './img/nuevo-gasto.svg'
 import InsertBills from "./components/InsertBills.jsx";
 import ListBills from "./components/ListBills.jsx";
-import {object} from "prop-types";
+import {formatDates, genId} from "./helpers/index.js";
 
 function App() {
   // set state for Edit Bills
@@ -27,13 +25,18 @@ function App() {
   // looking for changes in editBill object
   useEffect(() => {
     if (Object.keys(editBill).length > 0) {
-      handleNewSpent()
+      setModal(true)
+      // manage time for add 'animate' class in component
+      setTimeout(() => {
+        setAnimateModal(true)
+      }, 500)
     }
   }, [editBill])
 
   // handle click to add new Spent
   const handleNewSpent = () => {
     setModal(true)
+    setEditBill({})
     // manage time for add 'animate' class in component
     setTimeout(() => {
       setAnimateModal(true)
@@ -41,10 +44,23 @@ function App() {
   }
 
   const saveBills = (bill) => {
-    // set new bill
-    bill.id=genId()
-    bill.date= formatDates(Date.now())
-    setBills([bill, ...bills])
+    if (bill.id) {
+      const date = formatDates(Date.now())
+      bill.date = date
+      // updated bill
+      const updatedBills = bills.map((billState) => billState.id === bill.id ? bill : billState)
+      setBills(updatedBills)
+    } else {
+      //Setting new Bill
+      // format date
+      const date = formatDates(Date.now())
+      // insert new properties to object bill
+      bill.id = genId()
+      bill.date = date
+      // set new bill
+      setBills([bill, ...bills])
+    }
+
 
     // closing modal
     setAnimateModal(false)
@@ -90,6 +106,7 @@ function App() {
                 setAnimateModal={setAnimateModal}
                 saveBills={saveBills}
                 editBill={editBill}
+                setEditBill={setEditBill}
             />
         }
       </div>
